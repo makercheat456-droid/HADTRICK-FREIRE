@@ -1,0 +1,16 @@
+HADTRICK FREIRE — projeto Android para gerar APK
+
+IMPORTANTE
+Este projeto empacota o painel HTML em um aplicativo Android (WebView). O APK resultante abre o painel e salva preferências localmente. Não altera automaticamente DPI, sensibilidade do Free Fire, escala global de animações ou lixeira do Android. Essas funções exigem APIs/permissões específicas e não estão implementadas.
+
+COMO GERAR O APK PELO CELULAR (GitHub)
+1. Crie uma conta ou entre em https://github.com/.
+2. Crie um repositório novo chamado HADTRICK-FREIRE.
+3. Envie TODOS os arquivos e pastas deste ZIP para o repositório (incluindo a pasta .github).
+4. Abra a aba Actions do repositório.
+5. Se aparecer, toque em “I understand my workflows, go ahead and enable them”.
+6. Escolha “Build HADTRICK FREIRE APK” e toque em “Run workflow”.
+7. Quando terminar com marca verde, abra a execução e baixe o item “HADTRICK-FREIRE-APK” em Artifacts.
+8. Extraia o ZIP baixado e instale app-debug.apk no Android. Se solicitado, permita instalar apps dessa fonte.
+
+O APK gerado é de teste (debug), não publicado na Play Store.

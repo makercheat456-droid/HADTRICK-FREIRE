@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>HADTRICK FREIRE</title>
+<style>
+:root{color-scheme:dark;--red:#e32636;--bg:#080808;--panel:#151515}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Arial,sans-serif;min-height:100vh;padding:24px 18px}
+main{max-width:440px;margin:0 auto}
+header{text-align:center;margin:20px 0 30px}
+h1{color:var(--red);font-size:28px;letter-spacing:2px;margin:0}
+header p{color:#999;font-size:11px;letter-spacing:2px}
+button{width:100%;border:1px solid var(--red);border-radius:14px;padding:17px;margin:8px 0;background:var(--red);color:white;font-size:15px;font-weight:800;letter-spacing:.5px}
+button.alt{background:#171717}
+button:active{transform:scale(.985)}
+.panel{display:none;background:var(--panel);border:1px solid #333;border-radius:16px;padding:18px;margin-top:18px}
+h2{font-size:18px;margin:0 0 18px}
+label{display:block;font-weight:700;margin:20px 0 9px}
+input[type=range]{width:100%;accent-color:var(--red)}
+select{width:100%;background:#242424;color:white;border:1px solid #555;border-radius:10px;padding:12px}
+.value{color:#ff5966}
+.note{font-size:12px;color:#aaa;line-height:1.55}
+#status{background:#191919;border-radius:12px;padding:13px;margin-top:16px;color:#ddd;font-size:13px;line-height:1.5}
+footer{font-size:11px;color:#777;line-height:1.5;margin-top:20px}
+</style>
+</head>
+<body>
+<main>
+<header><h1>HADTRICK FREIRE</h1><p>PAINEL DE AJUSTES</p></header>
+<section id="home">
+<button id="game">ENTRAR NO FREE FIRE</button>
+<button id="settings">AJUSTAR HADTRICK</button>
+<button id="optimize">OTIMIZAR TUDO</button>
+</section>
+<section class="panel" id="adjust">
+<h2>AJUSTAR HADTRICK</h2>
+<label for="sensi">Sensi: <span class="value" id="sensiOut">50</span></label>
+<input id="sensi" type="range" min="0" max="100" value="50">
+<p class="note">Este controle salva sua preferência no aplicativo. Ele não altera a mira nem a sensibilidade interna do Free Fire.</p>
+<label for="dpi">DPI desejado: <span class="value" id="dpiOut">320</span></label>
+<input id="dpi" type="range" min="100" max="600" value="320" step="1">
+<label for="anim">Escala das animações do Android</label>
+<select id="anim">
+<option value="0">Desativadas (0x)</option><option value="0.5">0,5x</option><option value="1" selected>1x (padrão)</option><option value="1.5">1,5x</option><option value="2">2x</option>
+</select>
+<button id="save">SALVAR AJUSTES</button>
+<button class="alt" id="restore">RESTAURAR VALORES DO PAINEL</button>
+<button class="alt" id="back">VOLTAR</button>
+</section>
+<div id="status" role="status">Pronto. Escolha uma opção.</div>
+<footer>Esta versão é um painel web demonstrativo: salva Sensi, DPI e escala escolhidos, mas não tem acesso para alterar configurações globais do Android, limpar a lixeira de outros apps ou controlar o Free Fire. Para essas ações é necessário um aplicativo Android nativo e permissões compatíveis. Não apaga arquivos pessoais.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const status=$('status');
+function setStatus(t){status.textContent=t}
+function update(){ $('sensiOut').textContent=$('sensi').value; $('dpiOut').textContent=$('dpi').value; }
+function load(){
+ try{
+  const p=JSON.parse(localStorage.getItem('hadtrick-settings')||'{}');
+  if(p.sensi!=null)$('sensi').value=p.sensi;
+  if(p.dpi!=null)$('dpi').value=p.dpi;
+  if(p.anim!=null)$('anim').value=p.anim;
+ }catch(e){}
+ update();
+}
+$('settings').onclick=()=>{$('home').style.display='none';$('adjust').style.display='block';setStatus('Ajuste suas preferências.');};
+$('back').onclick=()=>{$('adjust').style.display='none';$('home').style.display='block';};
+$('sensi').oninput=update;
+$('dpi').oninput=update;
+$('save').onclick=()=>{
+ const p={sensi:$('sensi').value,dpi:$('dpi').value,anim:$('anim').value};
+ localStorage.setItem('hadtrick-settings',JSON.stringify(p));
+ setStatus('Preferências salvas neste aparelho. Elas não foram aplicadas às configurações do Android.');
+};
+$('restore').onclick=()=>{
+ $('sensi').value=50;$('dpi').value=320;$('anim').value='1';update();
+ localStorage.removeItem('hadtrick-settings');
+ setStatus('Valores padrão do painel restaurados. O Android não foi alterado.');
+};
+$('optimize').onclick=()=>setStatus('Nesta versão, a otimização automática do Android não está disponível. Você pode abrir Configurações > Bateria ou Armazenamento para fazer ajustes manualmente.');
+$('game').onclick=()=>{
+ setStatus('Abra o Free Fire pelo ícone do jogo. Esta versão web não consegue iniciar o jogo de forma confiável em todos os celulares.');
+ location.href='intent://launch/#Intent;package=com.dts.freefireth;end';
+};
+load();
+</script>
+</body>
+</html>
