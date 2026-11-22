@@ -22,7 +22,7 @@ jobs:
           fi
           mkdir -p /tmp/hadtrick
           unzip -q "$ZIP" -d /tmp/hadtrick
-          cp -R /tmp/hadtrick/HADTRICK_FREIRE_ANDROID/. .
+          rsync -a --exclude='.github/' /tmp/hadtrick/HADTRICK_FREIRE_ANDROID/ ./
       - name: Salvar arquivos
         run: |
           git config user.name "github-actions[bot]"
