@@ -1,0 +1,32 @@
+name: Extrair projeto HADTRICK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  extrair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extrair arquivos
+        run: |
+          ZIP=$(find . -maxdepth 1 -name '*.zip' | head -n 1)
+          if [ -z "$ZIP" ]; then
+            echo "Arquivo ZIP não encontrado"
+            exit 1
+          fi
+          mkdir -p /tmp/hadtrick
+          unzip -q "$ZIP" -d /tmp/hadtrick
+          cp -R /tmp/hadtrick/HADTRICK_FREIRE_ANDROID/. .
+      - name: Salvar arquivos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "Extrair projeto HADTRICK-FREIRE"
+          git push
